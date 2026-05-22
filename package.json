@@ -1,0 +1,16 @@
+{
+  "name": "certuilt2",
+  "version": "1.0.0",
+  "description": "Find all UCAs signed by a Root CA using CCADB data",
+  "main": "findUCA.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node findUCA.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

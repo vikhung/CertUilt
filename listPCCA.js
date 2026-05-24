@@ -12,6 +12,7 @@ const path = require('path');
 const { parseCertMeta } = require('./lib/cert-parser');
 const { generatePcReports } = require('./lib/pc-report-generator');
 const { initLogger } = require('./lib/logger');
+const { generateLogSummary } = require('./lib/log-summary-generator');
 
 // Windows 憑證存放區清單
 const STORES = [
@@ -130,6 +131,8 @@ async function main() {
 
   console.log('\n[output] 產生報表中...');
   generatePcReports({ machine, stores });
+
+  generateLogSummary(path.join(process.cwd(), 'logs'));
 }
 
 main().catch(err => {

@@ -23,10 +23,10 @@ node listPCCA.js
 ```
 
 每次執行都會產生：
-- **`output/report.html`** — 可在瀏覽器開啟的互動式樹狀報表（支援展開/收合）
-- **`output/result.json`** — 機器可讀的完整 CA 階層資料
-- **`pem/<Root CA 名稱>/<UCA 名稱>.crt`** — 有效 UCA 的憑證檔（CCADB 有提供 PEM 者）
-- **`pem/expire/<Root CA 名稱>/<UCA 名稱>.crt`** — 已過期 UCA 的憑證檔
+- **`pem/.myCert-report.html`** — 可在瀏覽器開啟的互動式樹狀報表（支援展開/收合）
+- **`pem/.myCert.json`** — 機器可讀的完整 CA 階層資料
+- **`pem/myCert/<Root CA 名稱>/<UCA 名稱>.crt`** — 有效 UCA 的憑證檔（CCADB 有提供 PEM 者）
+- **`pem/myCert/01.expire/<Root CA 名稱>/<UCA 名稱>.crt`** — 已過期 UCA 的憑證檔
 
 `.crt` 副檔名可在 Windows 直接雙擊以憑證檢視器開啟，亦可直接匯入憑證存放區。
 
@@ -76,7 +76,8 @@ node findUCA.js certs/www.twca.com.tw.crt
       "label": "也可以用名稱比對",
       "name": "DigiCert Global Root CA"
     }
-  ]
+  ],
+  "downloadFromCCADB": false
 }
 ```
 
@@ -85,6 +86,7 @@ node findUCA.js certs/www.twca.com.tw.crt
 | `label` | 選填；用於 Console 顯示，同時作為關鍵字備援比對（所有單字皆需吻合） |
 | `ski` | 用 SKI 十六進位字串比對（連續16進位，不加冒號），優先於 `name` |
 | `name` | 用憑證名稱關鍵字比對（不區分大小寫，部分相符即可） |
+| `downloadFromCCADB` | `true` 時將全部 CCADB 憑證匯出至 `pem/ccadb/`（增量，已存在的檔案略過） |
 
 比對優先順序：`ski` → `name` → `label` 關鍵字。若三者均找不到，程式會從 CCADB 列出最多 5 筆名稱相近的 Root CA 及其正確 SKI，方便直接複製填入。
 
@@ -105,16 +107,21 @@ lib/
   pc-report-generator.js  # listPCCA 的 HTML / JSON 報表產生
 certs/                    # 放置待分析的憑證檔案（.pem / .crt / .cer）
 output/                   # 自動產生（gitignored）
-  report.html             #   findUCA CA 樹狀報表
-  result.json             #   findUCA JSON 結果
   pc-report.html          #   listPCCA 本機 CA 清單
   pc-result.json          #   listPCCA JSON 結果
 pem/                      # 匯出的 UCA 憑證檔（gitignored）
-  <Root CA 名稱>/         #   有效憑證，每個 Root CA 一個子目錄
-    <UCA 名稱>.crt        #     各 UCA 憑證檔（可直接開啟或匯入）
-  expire/                 #   已過期憑證
-    <Root CA 名稱>/
-      <UCA 名稱>.crt
+  .myCert-report.html     #   findUCA CA 樹狀報表
+  .myCert.json            #   findUCA JSON 結果
+  .myCert-manifest.json   #   myCert 指紋→路徑索引
+  .ccadb-manifest.json    #   ccadb 指紋→路徑索引
+  myCert/<Root CA>/       #   有效 UCA 憑證
+  myCert/01.expire/<Root CA>/    #   已過期 UCA 憑證
+  myCert/00.new/<yyyyMMdd>/      #   CCADB 新增憑證副本
+  myCert/02.notExist/<Root CA>/  #   已從 CCADB 移除的憑證
+  ccadb/<Root CA>/        #   全部 CCADB 憑證（downloadFromCCADB: true）
+  ccadb/01.expire/<Root CA>/    #   已過期 CCADB 憑證
+  ccadb/00.new/<yyyyMMdd>/      #   CCADB 新增憑證副本
+  ccadb/02.notExist/<Root CA>/  #   已從 CCADB 移除的憑證
 logs/                     # 執行日誌（gitignored），每日一檔
 config.json               # 使用者設定：Root CA 白名單與 CCADB 參數
 ```

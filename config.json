@@ -5,8 +5,5 @@
       "ski": "1d896e3fa3504238a4cd10517ce4862381c84397"
     }
   ],
-  "ccadb": {
-    "diffStoreLimit": 100,
-    "diffDisplayLimit": 20
-  }
+  "downloadFromCCADB": true
 }

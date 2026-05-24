@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Remove-Item *)"
+      "Bash(Remove-Item *)",
+      "Bash(node --check findUCA.js)",
+      "Bash(node --check lib/ccadb-client.js)",
+      "Bash(node --check lib/config-loader.js)",
+      "Bash(node --check lib/report-generator.js)",
+      "Bash(node --check listPCCA.js)",
+      "Bash(node --check lib/cert-parser.js)",
+      "Bash(node --check lib/ca-tree.js)",
+      "Bash(node --check lib/logger.js)",
+      "Bash(node --check lib/pc-report-generator.js)",
+      "Bash(node *)"
     ]
   }
 }
